@@ -1,25 +1,37 @@
-.registerContainer{
-    height: 100vh;
-    width:100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+.registerContainer {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
-.inputContainer{
-    height: 100vh;
-    width:100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem; 
+.inputContainer {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
-.registerData{
-    width: 30vw;
-    height: 2rem;
+.registerData {
+  width: 30vw;
+  height: 2rem;
 }
-.registerData:focus{
-    outline: none;
+.registerData:focus {
+  outline: none;
+}
+.dashboardContainer {
+  width: 100vw;
+  height: 100vh;
+}
+.homepageContainer {
+  width: 100vw;
+  height: 82vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
