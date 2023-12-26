@@ -5,6 +5,10 @@ const jwt = require("jsonwebtoken");
 const UserController = (req, res) => {
   res.send("hello");
 };
+
+const Dashboard = (req,res) => {
+
+};
 const Register = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password || password.length < 8) {
@@ -50,8 +54,11 @@ const Login = async (req, res) => {
       expiresIn: "1800s",
     }
   );
-  
-  return res.cookie("auth", loginToken).status(200).json({ message: "authorization successful" });
+
+  return res
+    .cookie(loginToken)
+    .status(200)
+    .json({ message: "authorization successful" });
 };
 
-module.exports = { UserController, Register, Login };
+module.exports = { UserController, Dashboard, Register, Login };
