@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { redirect } from "react-router-dom";
 
-export default function main() {
+export default function Login() {
   const [formData, setformData] = useState({
     username: "",
     password: "",
@@ -13,11 +14,14 @@ export default function main() {
   const HandleLogin = async () => {
     const cleanData = JSON.parse(JSON.stringify(formData));
     try {
-      const response = await axios.post(
-        "http://localhost:3000/user/login",
-        cleanData
-      );
-      console.log(response.data.message);
+      const response = await axios({
+        method: "POST",
+        url: "http://localhost:3000/user/login",
+        data: cleanData,
+        withCredentials: true,
+      });
+      console.log(response);
+      return redirect("/dashboard");
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +42,7 @@ export default function main() {
         name="password"
         placeholder="password"
         className="registerData"
-        value={formData.username}
+        value={formData.password}
         onChange={HandleInput}
       />
       <button onClick={HandleLogin}>submit</button>

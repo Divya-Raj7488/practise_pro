@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function Register() {
+export default function Signup() {
   const [renderId, setrenderId] = useState(1);
   const [message, setmessage] = useState("");
   const [formData, setFormData] = useState({
