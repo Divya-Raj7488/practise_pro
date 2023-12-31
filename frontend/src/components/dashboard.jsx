@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
+import {AuthContext} from "../context/authContext";
 
 const Dashboard = () => {
-  const [Data, setData] = useState([
-    {
-      username: "hello",
-    },
-  ]);
+  const { Data, setData } = useContext(AuthContext);
   const [AuthStatus, setAuthStatus] = useState(false);
   const [isLoading, setisLoading] = useState(true);
 
@@ -16,9 +13,9 @@ const Dashboard = () => {
       const response = await axios.get("http://localhost:3000/user/dashboard", {
         withCredentials: true,
       });
-      
-      if (response) {
-        setData([response.data.authorizedData]); 
+      if (response.status === 200) {
+        setData([response.data.authorizedData]);
+        console.log(Data)
         setisLoading(false);
         setAuthStatus(true);
       } else {
@@ -42,12 +39,15 @@ const Dashboard = () => {
           Data.map(({ username }) => {
             return <div key={username}>{username}</div>;
           })}
+        <div>
+          <a href="/posts">posts</a>
+        </div>
       </div>
     );
   } else if (isLoading) {
     return <div>Loading...</div>;
   } else {
-    return <Navigate to='/login' />;
+    return <Navigate to="/login" />;
   }
 };
 

@@ -1,17 +1,18 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { redirect } from "react-router-dom";
 
 export default function Login() {
   const [formData, setformData] = useState({
     username: "",
     password: "",
+    email:"",
   });
   const HandleInput = (e) => {
     const { name, value } = e.target;
     setformData({ ...formData, [name]: value });
   };
-  const HandleLogin = async () => {
+  const HandleLogin = async (e) => {
+    e.preventDefault()
     const cleanData = JSON.parse(JSON.stringify(formData));
     try {
       const response = await axios({
@@ -20,8 +21,7 @@ export default function Login() {
         data: cleanData,
         withCredentials: true,
       });
-      console.log(response);
-      return redirect("/dashboard");
+      console.log(response)
     } catch (error) {
       console.log(error);
     }
@@ -32,7 +32,7 @@ export default function Login() {
       <input
         type="text"
         name="username"
-        placeholder="username"
+        placeholder="username or email"
         className="registerData"
         value={formData.username}
         onChange={HandleInput}

@@ -6,6 +6,7 @@ export default function Signup() {
   const [message, setmessage] = useState("");
   const [formData, setFormData] = useState({
     username: "",
+    email: "",
     password: "",
     confirmPassword: "",
   });
@@ -45,15 +46,23 @@ export default function Signup() {
           <h2>Register</h2>
           <input
             type="text"
-            placeholder="username"
+            placeholder="Username"
             name="username"
             onChange={handleInputChange}
             className="registerData"
             value={formData.username}
           />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="registerData"
+              value={formData.email}
+              onChange={handleInputChange}
+            />
           <input
             type="password"
-            placeholder="password"
+            placeholder="Password"
             name="password"
             onChange={handleInputChange}
             className="registerData"
@@ -63,7 +72,7 @@ export default function Signup() {
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
-            placeholder="confirm password"
+            placeholder="Confirm password"
             onChange={handleInputChange}
             className="registerData"
           />
