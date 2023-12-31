@@ -6,7 +6,6 @@ const UserController = (req, res) => {
   res.send("hello");
 };
 
-const Dashboard = (req, res) => {};
 const Register = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password || password.length < 8) {
@@ -44,9 +43,14 @@ const Login = async (req, res) => {
   if (!isCorrectPassword) {
     return res.status(401).json({ message: "unauthorized" });
   }
-  // existingUser.password = undefined;
+
   const loginToken = jwt.sign(
-    { username: existingUser.username },
+    {
+      username: existingUser.username,
+      name: existingUser.name,
+      profilePic: existingUser.profilePic,
+      posts: existingUser.posts,
+    },
     process.env.LOGIN_SECTRET_KEY,
     {
       expiresIn: "1800s",
@@ -64,4 +68,5 @@ const Login = async (req, res) => {
     .json({ message: "authorization successful" });
 };
 
-module.exports = { UserController, Dashboard, Register, Login };
+
+module.exports = { UserController, Register, Login};
