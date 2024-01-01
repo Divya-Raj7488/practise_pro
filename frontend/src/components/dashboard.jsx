@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
-import {AuthContext} from "../context/authContext";
+import { Navigate, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const Dashboard = () => {
   const { Data, setData } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [AuthStatus, setAuthStatus] = useState(false);
   const [isLoading, setisLoading] = useState(true);
+  const [user, setUser] = useState([]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:3000/user/dashboard", {
         withCredentials: true,
       });
-      if (response.status === 200) {
-        setData([response.data.authorizedData]);
-        console.log(Data)
+      if (response) {
+        setUser([response.data.authorizedData]);
         setisLoading(false);
         setAuthStatus(true);
       } else {
@@ -31,17 +32,20 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  const NavigateToPost = () => {
+    setData(user);
+    navigate("/posts");
+  };
+
   if (AuthStatus) {
     return (
       <div className="registerContainer">
         <h1>Here is your dashboard</h1>
-        {Data &&
-          Data.map(({ username }) => {
+        {user &&
+          user.map(({ username }) => {
             return <div key={username}>{username}</div>;
           })}
-        <div>
-          <a href="/posts">posts</a>
-        </div>
+        <button onClick={NavigateToPost}>POSTS</button>
       </div>
     );
   } else if (isLoading) {
