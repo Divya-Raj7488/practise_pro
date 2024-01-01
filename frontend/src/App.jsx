@@ -1,10 +1,10 @@
-import Signup from "./components/signup";
-import Login from "./components/login";
-import Dashboard from "./components/dashboard";
-import Homepage from "./components/homepage";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import Homepage from "./components/Homepage";
+import Posts from "./components/Posts";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthProvider from "./context/authProvider";
-import Posts from "./components/posts";
 
 function App() {
   return (
