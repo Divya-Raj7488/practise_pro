@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-  const [renderId, setrenderId] = useState(1);
-  const [message, setmessage] = useState("");
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -27,10 +27,10 @@ export default function Signup() {
           "http://localhost:3000/user/register",
           cleanData
         );
-        setrenderId(2);
-        setmessage(response.data.message);
+        if (response.status === 200) {
+          navigate('/dashboard')
+        }
       } else {
-        setrenderId(2);
         return setmessage("your passwords don't match.");
       }
     } catch (error) {
@@ -39,9 +39,9 @@ export default function Signup() {
     }
   };
 
-  return (
-    <div className="registerContainer">
-      {renderId === 1 && (
+    return (
+      <div className="registerContainer">
+       
         <div className="inputContainer">
           <h2>Register</h2>
           <input
@@ -52,14 +52,14 @@ export default function Signup() {
             className="registerData"
             value={formData.username}
           />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="registerData"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="registerData"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
           <input
             type="password"
             placeholder="Password"
@@ -80,8 +80,6 @@ export default function Signup() {
             submit
           </button>
         </div>
-      )}
-      {renderId === 2 && <div>{message}</div>}
-    </div>
-  );
-}
+      </div>
+    );
+  }

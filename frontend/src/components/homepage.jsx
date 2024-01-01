@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
-// import AuthProvider from '../context/authProvider'
-import { AuthContext } from "../context/authContext";
+import React, { useContext, useEffect } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Homepage() {
-  const { Data } = useContext(AuthContext);
-  console.log(Data);
+  const {Data} = useContext(AuthContext)
+  console.log(Data)
   return (
     <div className="homepageContainer">
       <h1>welcome</h1>

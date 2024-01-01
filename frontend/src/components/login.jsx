@@ -1,18 +1,20 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [formData, setformData] = useState({
     username: "",
     password: "",
-    email:"",
+    email: "",
   });
   const HandleInput = (e) => {
     const { name, value } = e.target;
     setformData({ ...formData, [name]: value });
   };
   const HandleLogin = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const cleanData = JSON.parse(JSON.stringify(formData));
     try {
       const response = await axios({
@@ -21,7 +23,9 @@ export default function Login() {
         data: cleanData,
         withCredentials: true,
       });
-      console.log(response)
+      if (response.status === 200) {
+        navigate("/dashboard");
+      }
     } catch (error) {
       console.log(error);
     }
