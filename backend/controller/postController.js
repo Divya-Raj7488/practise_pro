@@ -8,6 +8,11 @@ const CreatePost = async (req, res) => {
   const { username, caption } = req.body;
   const uploadedFile = req.files.postMedia;
   const { name } = uploadedFile;
+  //check for authorization
+  if (!username || !username.length) {
+    console.log(req.body)
+    return res.status(401).json({ message: "unauthorized" });
+  }
   //create file and upload it in uploads folder
   const uploadFilePath = path.join(
     __dirname,
@@ -37,8 +42,6 @@ const CreatePost = async (req, res) => {
   return res.status(200).json({ message: "file upload successful" });
 };
 
-const GetPosts = async () =>{
+const GetPosts = async () => {};
 
-}
-
-module.exports = { CreatePost,GetPosts };
+module.exports = { CreatePost, GetPosts };
