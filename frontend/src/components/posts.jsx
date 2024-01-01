@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
-import {AuthContext} from "../context/authContext";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Posts() {
   const { Data } = useContext(AuthContext);
@@ -17,9 +17,9 @@ export default function Posts() {
 
   const HandlePosts = async (e) => {
     e.preventDefault();
-    // if (Data.length > 0) {
-      formData.set("username", "divya");
-    // }
+    if (Data.length > 0) {
+      formData.set("username", Data[0].username);
+    }
     try {
       const response = await axios({
         method: "POST",
@@ -30,12 +30,12 @@ export default function Posts() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response);
       setFormData(new FormData());
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className="postContainer">
       <h1>Posts</h1>
