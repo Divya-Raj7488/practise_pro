@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import DisplayPosts from "./displayPosts";
 
 const Dashboard = () => {
   const { Data, setData } = useContext(AuthContext);
@@ -32,20 +33,29 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const NavigateToPost = () => {
+  useEffect(() => {
     setData(user);
+  }, [user]);
+
+  const NavigateToPost = () => {
     navigate("/posts");
   };
 
   if (AuthStatus) {
     return (
       <div className="registerContainer">
-        <h1>Here is your dashboard</h1>
-        {user &&
-          user.map(({ username }) => {
-            return <div key={username}>{username}</div>;
-          })}
-        <button onClick={NavigateToPost}>POSTS</button>
+        <div className="displayUserInfo">
+          <h1>Here is your dashboard</h1>
+          {user &&
+            user.map(({ username }) => {
+              return <div key={username}>{username}</div>;
+            })}
+          <button onClick={NavigateToPost}>Posts</button>
+          <button onClick={(e) => navigate("/")}>Go to homepage</button>
+        </div>
+        <div className="displayPosts">
+        <DisplayPosts />
+        </div>
       </div>
     );
   } else if (isLoading) {

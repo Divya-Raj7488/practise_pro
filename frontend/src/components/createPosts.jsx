@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-export default function Posts() {
+export default function CreatePosts() {
   const { Data } = useContext(AuthContext);
   const [formData, setFormData] = useState(new FormData());
 
@@ -14,7 +14,7 @@ export default function Posts() {
       formData.set(name, value);
     }
   };
-
+console.log(Data)
   const HandlePosts = async (e) => {
     e.preventDefault();
     if (Data.length > 0) {

@@ -1,20 +1,19 @@
-import React, { useContext, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Homepage() {
-  const {Data} = useContext(AuthContext)
-  console.log(Data)
+  const navigate = useNavigate()
   return (
     <div className="homepageContainer">
       <h1>welcome</h1>
       <div>
-        <a href="/login">Login</a>
+        <button onClick={()=> navigate("/login")}>Login</button>
       </div>
       <div>
-        <a href="/dashboard">Dashboard</a>
+        <button onClick={()=> navigate("/dashboard")}>Dashboard</button>
       </div>
       <div>
-        <a href="/posts">posts</a>
+        <button onClick={()=> navigate("/posts")}>posts</button>
       </div>
     </div>
   );
