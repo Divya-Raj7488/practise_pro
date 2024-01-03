@@ -10,7 +10,7 @@ const CreatePost = async (req, res) => {
   const { name } = uploadedFile;
   //check for authorization
   if (!username || !username.length) {
-    console.log(req.body)
+    console.log(req.body);
     return res.status(401).json({ message: "unauthorized" });
   }
   //create file and upload it in uploads folder
@@ -42,6 +42,13 @@ const CreatePost = async (req, res) => {
   return res.status(200).json({ message: "file upload successful" });
 };
 
-const GetPosts = async () => {};
+const GetPosts = async () => {
+  const { username } = req.body;
+  if (!username || username === "") {
+    return res.status(401).json({ message: "unauthorized! access denied." });
+  }
+  const sendPosts = await postModel.find({ username: username });
+  
+};
 
 module.exports = { CreatePost, GetPosts };
