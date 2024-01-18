@@ -5,9 +5,12 @@ export default function Homepage() {
   const navigate = useNavigate()
   return (
     <div className="homepageContainer">
-      <h1>welcome</h1>
+      <h1>Welcome</h1>
       <div>
-        <button onClick={()=> navigate("/login")}>Login</button>
+        <button onClick={()=> navigate("/signin")}>Signin</button>
+      </div>
+      <div>
+        <button onClick={()=> navigate("/signup")}>Signup</button>
       </div>
       <div>
         <button onClick={()=> navigate("/dashboard")}>Dashboard</button>

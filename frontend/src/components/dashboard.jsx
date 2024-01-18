@@ -2,11 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import DisplayPosts from "./displayPosts";
 
 const Dashboard = () => {
-  const { Data, setData } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { Data, setData } = useContext(AuthContext);
   const [AuthStatus, setAuthStatus] = useState(false);
   const [isLoading, setisLoading] = useState(true);
   const [user, setUser] = useState([]);
@@ -17,7 +16,8 @@ const Dashboard = () => {
         withCredentials: true,
       });
       if (response) {
-        setUser([response.data.authorizedData]);
+        setUser(response.data.authorizedData);
+        console.log(response.data.authorizedData);
         setisLoading(false);
         setAuthStatus(true);
       } else {
@@ -34,34 +34,36 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    setData(user);
-  }, [user]);
+    setData([user]);
+  }, [user, setUser]);
 
-  const NavigateToPost = () => {
-    navigate("/posts");
-  };
 
   if (AuthStatus) {
     return (
       <div className="registerContainer">
         <div className="displayUserInfo">
           <h1>Here is your dashboard</h1>
-          {user &&
-            user.map(({ username }) => {
-              return <div key={username}>{username}</div>;
-            })}
-          <button onClick={NavigateToPost}>Posts</button>
+          <div>{user.username}</div>
           <button onClick={(e) => navigate("/")}>Go to homepage</button>
         </div>
         <div className="displayPosts">
-        <DisplayPosts />
+          {user.posts.map(({postIndex,caption,createdAt,postMediaPath}) => {
+            return (
+              <div key={postIndex}>
+                <div>{caption}</div>
+                <div>{createdAt}</div>
+                <img src={postMediaPath} alt="logo" />
+              </div>
+            );
+          })}
         </div>
+        <button onClick={() => navigate('/posts')}>Create New Post</button>
       </div>
     );
   } else if (isLoading) {
     return <div>Loading...</div>;
   } else {
-    return <Navigate to="/login" />;
+    return <Navigate to="/signin" />;
   }
 };
 
