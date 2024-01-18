@@ -1,6 +1,9 @@
 const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const postModel = require("../models/posts");
+// const Redis = require("redis")
+// const redisClient = Redis.createClient()
 
 const UserController = (req, res) => {
   res.send("hello");
@@ -24,6 +27,7 @@ const Register = async (req, res) => {
   return res.status(200).json({ message: "user Created successfully" });
 };
 
+
 const Login = async (req, res) => {
   const { username, password } = req.body;
   // authentication
@@ -43,13 +47,15 @@ const Login = async (req, res) => {
   if (!isCorrectPassword) {
     return res.status(401).json({ message: "unauthorized" });
   }
+  const existingPosts = await postModel.find({ userName: username });
+  console.log(existingPosts);
 
   const loginToken = jwt.sign(
     {
       username: existingUser.username,
       name: existingUser.name,
       profilePic: existingUser.profilePic,
-      posts: existingUser.posts,
+      posts: existingPosts,
     },
     process.env.LOGIN_SECTRET_KEY,
     {
@@ -68,5 +74,4 @@ const Login = async (req, res) => {
     .json({ message: "authorization successful" });
 };
 
-
-module.exports = { UserController, Register, Login};
+module.exports = { UserController, Register, Login };

@@ -13,7 +13,7 @@ const PostSchema = new Schema(
     caption: {
       type: String,
       default: "",
-    }, 
+    },
     postMediaPath: {
       type: String,
       required: true,
@@ -21,5 +21,6 @@ const PostSchema = new Schema(
   },
   { timestamps: true }
 );
+
 const postModel = model("Post", PostSchema);
 module.exports = postModel;
