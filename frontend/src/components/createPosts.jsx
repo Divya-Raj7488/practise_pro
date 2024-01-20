@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePosts() {
   const { Data } = useContext(AuthContext);
+  const navigate = useNavigate()
   const [formData, setFormData] = useState(new FormData());
 
   const HandlePostInput = (e) => {
@@ -60,6 +62,7 @@ export default function CreatePosts() {
       <button onClick={HandlePosts} disabled={formData.postMedia === ""}>
         Post
       </button>
+      <button onClick={()=>{navigate('/dashboard')}}>Go to dashboard</button>
     </div>
   );
 }

@@ -7,7 +7,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { Data, AuthStatus } = useContext(AuthContext);
   const [formData, setformData] = useState(new FormData());
-  
+  const [posts, setPosts] = useState([]);
+
   // post request for uploading profilepic.
   const HandleChange = (e) => {
     const { name, files } = e.target;
@@ -33,6 +34,23 @@ const Dashboard = () => {
       console.log("cannot send formdata.");
     }
   };
+
+  const FetchPosts = async () => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: "http://localhost:3000/user/fetchposts",
+        withCredentials: true,
+      });
+      setPosts(response.data.posts);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    FetchPosts();
+  }, []);
 
   if (AuthStatus == true) {
     return (
@@ -74,18 +92,16 @@ const Dashboard = () => {
 
           <button onClick={(e) => navigate("/")}>Go to homepage</button>
         </div>
-        {/* <div className="displayPosts">
-          {user.posts.map(({postIndex,caption,createdAt,postMediaPath}) => {
+        <div className="displayPosts">
+          {posts.map(({ postIndex, caption, postMediaPath }) => {
             return (
               <div key={postIndex}>
                 <div>{caption}</div>
-                <div>{createdAt}</div>
-                <img src={postMediaPath} alt="logo" />
+                <img src={postMediaPath} alt="logo" width={200} height={200} />
               </div>
             );
           })}
-        </div> */}
-        {/* <DisplayPosts /> */}
+        </div>
         <button onClick={() => navigate("/posts")}>Create New Post</button>
       </div>
     );
