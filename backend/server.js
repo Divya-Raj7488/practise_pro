@@ -5,10 +5,12 @@ const cors = require("cors");
 const corsOptions = require("./config/cors");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
-const Redis = require('redis')
+// const checkToken = require("./middleware/checkToken");
 const app = express();
+const path = require('path')
 
 DbConnect();
+app.use('/uploads',express.static(path.join(__dirname, "uploads")));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
@@ -19,7 +21,7 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
-
+// app.use("*", checkToken);
 app.use("/user", require("./routes/user"));
 app.listen(process.env.PORT, () => {
   console.log(`app is listening on port 3000`);

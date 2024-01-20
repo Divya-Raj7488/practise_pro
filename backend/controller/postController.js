@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 const postModel = require("../models/posts");
+const Redis = require("redis");
+const redisClient = Redis.createClient();
 
 const CreatePost = async (req, res) => {
   const { username, caption } = req.body;
@@ -43,11 +45,11 @@ const CreatePost = async (req, res) => {
 };
 
 const GetPosts = async () => {
-  const { username } = req.body;
+  const username = req.headers["username"];
   if (!username || username === "") {
     return res.status(401).json({ message: "unauthorized! access denied." });
   }
-  const sendPosts = await postModel.find({ username: username });
+  const existingPosts = await postModel.find({ userName: username });
   
 };
 

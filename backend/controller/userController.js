@@ -1,12 +1,24 @@
 const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const postModel = require("../models/posts");
-// const Redis = require("redis")
-// const redisClient = Redis.createClient()
+const { v4: uuidv4 } = require("uuid");
+const path = require("path");
+const fs = require("fs");
 
-const UserController = (req, res) => {
-  res.send("hello");
+const UserController = async (req, res) => {
+  const authorizedData = req.user;
+  const { profilePic } = await userModel.findOne({ _id: authorizedData.id });
+  if (profilePic) {
+    const imageBuffer = fs.readFileSync(profilePic);
+    const imageBase64 = imageBuffer.toString("base64");
+    authorizedData.profilePic = `data:image/png;base64,${imageBase64}`;
+  } else {
+    authorizedData.profilePic = "";
+  }
+  return res.status(200).json({
+    message: "Successful log in",
+    authorizedData,
+  });
 };
 
 const Register = async (req, res) => {
@@ -27,7 +39,6 @@ const Register = async (req, res) => {
   return res.status(200).json({ message: "user Created successfully" });
 };
 
-
 const Login = async (req, res) => {
   const { username, password } = req.body;
   // authentication
@@ -47,15 +58,12 @@ const Login = async (req, res) => {
   if (!isCorrectPassword) {
     return res.status(401).json({ message: "unauthorized" });
   }
-  const existingPosts = await postModel.find({ userName: username });
-  console.log(existingPosts);
 
   const loginToken = jwt.sign(
     {
+      id: existingUser._id,
       username: existingUser.username,
       name: existingUser.name,
-      profilePic: existingUser.profilePic,
-      posts: existingPosts,
     },
     process.env.LOGIN_SECTRET_KEY,
     {
@@ -74,4 +82,32 @@ const Login = async (req, res) => {
     .json({ message: "authorization successful" });
 };
 
-module.exports = { UserController, Register, Login };
+const UpdateProfilePic = async (req, res) => {
+  const { username } = req.user;
+  const profilePic = req.files.profilePic;
+  const { name } = profilePic;
+  const uploadFilePath = path.join(
+    __dirname,
+    "..",
+    "uploads",
+    `${uuidv4()}${path.extname(name)}`
+  );
+  const updatedUser = await userModel.updateOne(
+    { username: username },
+    { profilePic: uploadFilePath }
+  );
+  if (!updatedUser) {
+    return res.status(500).json({ message: "server error" });
+  }
+  profilePic.mv(uploadFilePath, (error) => {
+    if (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "can't upload file. Please try again",
+      });
+    }
+    return res.status(200).json({ message: "file uploaded successfully" });
+  });
+};
+
+module.exports = { UserController, Register, Login, UpdateProfilePic };
