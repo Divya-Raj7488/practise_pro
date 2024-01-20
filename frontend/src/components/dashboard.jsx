@@ -1,52 +1,80 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { Data, setData } = useContext(AuthContext);
-  const [AuthStatus, setAuthStatus] = useState(false);
-  const [isLoading, setisLoading] = useState(true);
-  const [user, setUser] = useState([]);
+  const { Data, AuthStatus } = useContext(AuthContext);
+  const [formData, setformData] = useState(new FormData());
+  
+  // post request for uploading profilepic.
+  const HandleChange = (e) => {
+    const { name, files } = e.target;
+    formData.set([name], files[0]);
+  };
 
-  const fetchData = async () => {
+  const PostImage = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/user/dashboard", {
+      const response = await axios({
+        method: "PUT",
+        url: "http://localhost:3000/user/profilePic",
         withCredentials: true,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       if (response) {
-        setUser(response.data.authorizedData);
-        console.log(response.data.authorizedData);
-        setisLoading(false);
-        setAuthStatus(true);
-      } else {
-        setisLoading(false);
+        setformData(new FormData());
+        console.log(response);
       }
     } catch (error) {
-      console.log(error);
-    } finally {
-      setisLoading(false);
+      console.log("cannot send formdata.");
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  useEffect(() => {
-    setData([user]);
-  }, [user, setUser]);
-
-
-  if (AuthStatus) {
+  if (AuthStatus == true) {
     return (
       <div className="registerContainer">
         <div className="displayUserInfo">
           <h1>Here is your dashboard</h1>
-          <div>{user.username}</div>
+          {Data.map(({ username, id, profilePic }) => {
+            return (
+              <div key={id}>
+                <div>{username}</div>
+                <img
+                  src={profilePic == "" ? "" : profilePic}
+                  alt="profilePic"
+                  className="profilePic"
+                  width={48}
+                  height={48}
+                />
+              </div>
+            );
+          })}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
+              alignItems: "center",
+            }}
+          >
+            <input
+              type="file"
+              alt="profile pic"
+              name="profilePic"
+              onChange={HandleChange}
+            />
+            <button className="dpBtn" onClick={PostImage}>
+              Edit
+            </button>
+          </div>
+
           <button onClick={(e) => navigate("/")}>Go to homepage</button>
         </div>
-        <div className="displayPosts">
+        {/* <div className="displayPosts">
           {user.posts.map(({postIndex,caption,createdAt,postMediaPath}) => {
             return (
               <div key={postIndex}>
@@ -56,12 +84,11 @@ const Dashboard = () => {
               </div>
             );
           })}
-        </div>
-        <button onClick={() => navigate('/posts')}>Create New Post</button>
+        </div> */}
+        {/* <DisplayPosts /> */}
+        <button onClick={() => navigate("/posts")}>Create New Post</button>
       </div>
     );
-  } else if (isLoading) {
-    return <div>Loading...</div>;
   } else {
     return <Navigate to="/signin" />;
   }

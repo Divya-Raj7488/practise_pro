@@ -24,7 +24,7 @@ export default function Login() {
         withCredentials: true,
       });
       if (response.status === 200) {
-        navigate("/dashboard");
+        navigate("/");
       }
     } catch (error) {
       console.log(error);

@@ -14,7 +14,8 @@ export default function CreatePosts() {
       formData.set(name, value);
     }
   };
-console.log(Data)
+  // console.log(Data);
+
   const HandlePosts = async (e) => {
     e.preventDefault();
     if (Data.length > 0) {
