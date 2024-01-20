@@ -5,7 +5,6 @@ const cors = require("cors");
 const corsOptions = require("./config/cors");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
-// const checkToken = require("./middleware/checkToken");
 const app = express();
 const path = require('path')
 

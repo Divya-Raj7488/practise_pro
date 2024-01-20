@@ -1,10 +1,9 @@
-// const fsPromises = require("fs").promises;
 const fs = require("fs");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 const postModel = require("../models/posts");
 const Redis = require("redis");
-const redisClient = Redis.createClient();
+// const redisClient = Redis.createClient();
 
 const CreatePost = async (req, res) => {
   const { username, caption } = req.body;
@@ -44,13 +43,21 @@ const CreatePost = async (req, res) => {
   return res.status(200).json({ message: "file upload successful" });
 };
 
-const GetPosts = async () => {
-  const username = req.headers["username"];
-  if (!username || username === "") {
-    return res.status(401).json({ message: "unauthorized! access denied." });
+const FetchPosts = async (req,res) => {
+  const { username } = req.user;
+  const posts = await postModel.find({ userName: username });
+  if (posts.length === 0) {
+    return res.status(200).json({
+      message: "Create New Posts",
+    });
   }
-  const existingPosts = await postModel.find({ userName: username });
-  
+  posts.forEach((post) => {
+    const imageBuffer = fs.readFileSync(post.postMediaPath);
+    const imageBase64 = imageBuffer.toString("base64");
+    post.postMediaPath = `data:image/png;base64,${imageBase64}`;
+  });
+
+  return res.status(200).json({ message: "Posts fetching successful", posts });
 };
 
-module.exports = { CreatePost, GetPosts };
+module.exports = { CreatePost, FetchPosts };
