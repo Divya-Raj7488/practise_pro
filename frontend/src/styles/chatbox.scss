@@ -1,0 +1,37 @@
+.chatboxContainer{
+    width: 100vw;
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+.searchBoxContainer{
+    width: 100vw;
+    height: 4rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.chats{
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: row;
+}
+.messagers{
+    width: 25vw;
+    height: 90vh;
+}
+.personalChat{
+    width: 75vw;
+    height: 90vh;
+}
+.searchBox{
+    width: 30vw;
+    height: 2.5rem;
+    border: 2px solid grey;
+    border-radius: 0.5rem;
+    padding-left: 0.5rem;
+    font-size: 1.5rem;
+}
