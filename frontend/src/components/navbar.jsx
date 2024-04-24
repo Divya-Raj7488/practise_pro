@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { Data } = useContext(AuthContext);
+  const [{ user }] = useSelector((state) => state.users);
 
   return (
     <div className="navContainer">
-      {Data.length === 0 && (
+      {user.length === 0 && (
         <>
           <div>
             <button onClick={() => navigate("/signin")}>Signin</button>

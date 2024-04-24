@@ -4,13 +4,14 @@ import Dashboard from "./components/dashboard";
 import Homepage from "./components/homepage";
 import CreatePosts from "./components/createPosts";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AuthProvider from "./context/authProvider";
+import { Provider } from "react-redux";
+import store from "./app/store";
 import Chatbox from "./components/chatbox";
 
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
+      <Provider store={store}>
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/signup" element={<Signup />} />
@@ -19,7 +20,7 @@ function App() {
           <Route path="/posts" element={<CreatePosts />} />
           <Route path="/chat" element={<Chatbox />} />
         </Routes>
-      </AuthProvider>
+      </Provider>
     </BrowserRouter>
   );
 }
