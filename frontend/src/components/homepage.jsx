@@ -2,10 +2,14 @@ import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import Navbar from "./navbar";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchTodos } from "../features/userSlice";
 
 export default function Homepage() {
 
   const user = useSelector((state) => state.users);
+  const response = useDispatch(fetchTodos);
+  console.log(fetchTodos);
+
  
   // const fetchData = async () => {
   //   try {
