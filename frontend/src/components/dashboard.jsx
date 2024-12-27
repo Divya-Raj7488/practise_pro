@@ -1,24 +1,20 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import Navbar from "./navbar";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  // const Data = [];
-  // const AuthStatus = false
-  const { Data = [], AuthStatus = false } = useContext(AuthContext);
-  const response = useContext(AuthContext);
-  console.log(response);
   const [formData, setformData] = useState(new FormData());
   const [posts, setPosts] = useState([]);
+
+  const { user, AuthStatus, loading } = useSelector((state) => state.user);
 
   const handleProfilePicChange = () => {
     fileInputRef.current.click();
   };
-  // post request for uploading profilepic.
   const HandleChange = (e) => {
     const { name, files } = e.target;
     formData.set([name], files[0]);
@@ -62,7 +58,7 @@ const Dashboard = () => {
     FetchPosts();
   }, []);
 
-  if (AuthStatus == true && Data.length !== 0) {
+  if (AuthStatus === true) {
     return (
       <div className="Dashboard">
         <Navbar />
@@ -70,7 +66,8 @@ const Dashboard = () => {
           <div className="InfoBox">
             <div className="displayUserInfo">
               <h1>Here is your dashboard</h1>
-              {Data &&
+              <div>{user.username}</div>
+              {/* {Data &&
                 Data.map(({ username, id, profilePic }) => {
                   return (
                     <div key={id}>
@@ -86,8 +83,8 @@ const Dashboard = () => {
                       </label>
                     </div>
                   );
-                })}
-              <div
+                })} */}
+              {/* <div
                 style={{
                   display: "none",
                 }}
@@ -102,11 +99,11 @@ const Dashboard = () => {
                 <button className="dpBtn" onClick={PostImage}>
                   Edit
                 </button>
-              </div>
+              </div> */}
 
               {/* <button onClick={(e) => navigate("/")}>Go to homepage</button> */}
             </div>
-            <div className="displayPosts">
+            {/* <div className="displayPosts">
               {posts.map(({ postIndex, caption, postMediaPath }) => {
                 return (
                   <div key={postIndex}>
@@ -120,9 +117,9 @@ const Dashboard = () => {
                   </div>
                 );
               })}
-            </div>
-            <button onClick={() => navigate("/posts")}>Create New Post</button>
-            <button onClick={() => navigate("/chat")}>Chats</button>
+            </div> */}
+            {/* <button onClick={() => navigate("/posts")}>Create New Post</button>
+            <button onClick={() => navigate("/chat")}>Chats</button> */}
           </div>
         </div>
       </div>

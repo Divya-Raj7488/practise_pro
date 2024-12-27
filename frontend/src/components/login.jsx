@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setUser } from "../features/userSlice";
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setformData] = useState({
     username: "",
     password: "",
@@ -24,9 +27,18 @@ export default function Login() {
         withCredentials: true,
       });
       if (response.status === 200) {
+        console.log(response.data.user);
+        const user = response.data.user;
+        dispatch(setUser(user));
+        // console.log(response.data.user);
         navigate("/");
       }
     } catch (error) {
+      // if (error.response.data.message === "user not found") {
+      //   navigate("/signup");
+      // } else {
+      //   console.log(error);
+      // }
       console.log(error);
     }
   };

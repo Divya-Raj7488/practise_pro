@@ -1,16 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  // const [{ user }] = useSelector((state) => state.users);
-  const { Data, AuthStatus } = useContext(AuthContext);
-  const user = Data;
+  const { user, AuthStatus, loading } = useSelector((state) => state.user);
   return (
     <div className="navContainer">
-      {Array.isArray(user) && user.length > 0 ? (
+      {AuthStatus && user !== undefined ? (
         <>
           <div>
             <button onClick={() => navigate("/dashboard")}>Dashboard</button>

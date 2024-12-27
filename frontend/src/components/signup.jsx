@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -28,7 +28,8 @@ export default function Signup() {
           cleanData
         );
         if (response.status === 200) {
-          navigate('/dashboard')
+          console.log(response);
+          navigate("/dashboard");
         }
       } else {
         return setmessage("your passwords don't match.");
@@ -39,47 +40,46 @@ export default function Signup() {
     }
   };
 
-    return (
-      <div className="registerContainer">
-       
-        <div className="inputContainer">
-          <h2>Register</h2>
-          <input
-            type="text"
-            placeholder="Username"
-            name="username"
-            onChange={handleInputChange}
-            className="registerData"
-            value={formData.username}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="registerData"
-            value={formData.email}
-            onChange={handleInputChange}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            onChange={handleInputChange}
-            className="registerData"
-            value={formData.password}
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            placeholder="Confirm password"
-            onChange={handleInputChange}
-            className="registerData"
-          />
-          <button type="submit" onClick={HandleRegistration}>
-            submit
-          </button>
-        </div>
+  return (
+    <div className="registerContainer">
+      <div className="inputContainer">
+        <h2>Register</h2>
+        <input
+          type="text"
+          placeholder="Username"
+          name="username"
+          onChange={handleInputChange}
+          className="registerData"
+          value={formData.username}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          className="registerData"
+          value={formData.email}
+          onChange={handleInputChange}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          onChange={handleInputChange}
+          className="registerData"
+          value={formData.password}
+        />
+        <input
+          type="password"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          placeholder="Confirm password"
+          onChange={handleInputChange}
+          className="registerData"
+        />
+        <button type="submit" onClick={HandleRegistration}>
+          submit
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
+}

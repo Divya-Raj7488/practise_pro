@@ -1,10 +1,8 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function CreatePosts() {
-  const { Data } = useContext(AuthContext);
   const navigate = useNavigate()
   const [formData, setFormData] = useState(new FormData());
 
