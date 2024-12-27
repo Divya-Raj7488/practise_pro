@@ -8,7 +8,7 @@ const Chatbox = () => {
       </div>
       <div className='chats'>
         <div className='messagers'>
-            {/* <div></div> */}
+            <div></div>
         </div>
         <div className='personalChat'></div>
       </div>

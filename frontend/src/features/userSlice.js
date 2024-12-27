@@ -1,16 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
-
-const initialState = [{ user: [], loading: true, authStatus: false }];
-
-function getUserDetails(state, action) {}
-
-const userSlice = createSlice({
-  name: "users",
-  initialState,
-  reducers: {
-    getUser: getUserDetails,
-  },
-});
-
-export default userSlice.reducer;
-export const { createUser, getUser, updateUser } = userSlice.actions;
+const reducerFunction = (state = { age: 0 }, action) => {
+  if (action.type === "increment") {
+    return {
+      age: state.age + 1,
+    };
+  }
+  if (action.type === "decrement") {
+    if (state.age > 1) {
+      return {
+        age: state.age - 1,
+      };
+    }
+    return state;
+  }
+  return state;
+};
+export default reducerFunction

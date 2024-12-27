@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AuthContext } from "./AuthContext";
 
 const AuthProvider = ({ children }) => {
-  const [Data, setData] = useState([]);
+  const [Data, setData] = useState([{ name: "Divya" }]);
   const [AuthStatus, setAuthStatus] = useState(false);
 
   return (

@@ -7,7 +7,11 @@ import Navbar from "./navbar";
 const Dashboard = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  const { Data, AuthStatus } = useContext(AuthContext);
+  // const Data = [];
+  // const AuthStatus = false
+  const { Data = [], AuthStatus = false } = useContext(AuthContext);
+  const response = useContext(AuthContext);
+  console.log(response);
   const [formData, setformData] = useState(new FormData());
   const [posts, setPosts] = useState([]);
 
@@ -51,13 +55,14 @@ const Dashboard = () => {
       }
       setPosts([]);
     } catch (error) {
+      console.log(error);
     }
   };
   useEffect(() => {
     FetchPosts();
   }, []);
 
-  if (AuthStatus == true) {
+  if (AuthStatus == true && Data.length !== 0) {
     return (
       <div className="Dashboard">
         <Navbar />
@@ -65,22 +70,23 @@ const Dashboard = () => {
           <div className="InfoBox">
             <div className="displayUserInfo">
               <h1>Here is your dashboard</h1>
-              {Data.map(({ username, id, profilePic }) => {
-                return (
-                  <div key={id}>
-                    <h3>{username}</h3>
-                    <label onClick={handleProfilePicChange}>
-                      <img
-                        src={profilePic == "" ? "" : profilePic}
-                        alt="profilePic"
-                        className="profilePic"
-                        width={48}
-                        height={48}
-                      />
-                    </label>
-                  </div>
-                );
-              })}
+              {Data &&
+                Data.map(({ username, id, profilePic }) => {
+                  return (
+                    <div key={id}>
+                      <h3>{username}</h3>
+                      <label onClick={handleProfilePicChange}>
+                        <img
+                          src={profilePic == "" ? "" : profilePic}
+                          alt="profilePic"
+                          className="profilePic"
+                          width={48}
+                          height={48}
+                        />
+                      </label>
+                    </div>
+                  );
+                })}
               <div
                 style={{
                   display: "none",
