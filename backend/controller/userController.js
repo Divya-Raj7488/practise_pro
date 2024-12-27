@@ -22,7 +22,7 @@ const UserController = async (req, res) => {
 };
 
 const Register = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
   if (!username || !password || password.length < 8) {
     return res
       .status(400)
@@ -32,11 +32,19 @@ const Register = async (req, res) => {
   const newUser = await userModel.create({
     username: username,
     password: hashedPwd,
+    email: email,
   });
   if (!newUser) {
     return res.status(500).json({ message: "request failed! try again" });
   }
-  return res.status(200).json({ message: "user Created successfully" });
+  return res.status(200).json({
+    message: "user Created successfully",
+    user: {
+      id: newUser._id,
+      username: newUser.username,
+      email: newUser.email,
+    },
+  });
 };
 
 const Login = async (req, res) => {
@@ -56,14 +64,16 @@ const Login = async (req, res) => {
     existingUser.password
   );
   if (!isCorrectPassword) {
-    return res.status(401).json({ message: "unauthorized" });
+    return res.status(401).json({
+      message: "unauthorized",
+    });
   }
 
   const loginToken = jwt.sign(
     {
       id: existingUser._id,
       username: existingUser.username,
-      name: existingUser.name,
+      email: existingUser.email,
     },
     process.env.LOGIN_SECTRET_KEY,
     {
@@ -79,7 +89,14 @@ const Login = async (req, res) => {
       maxAge: 360000,
     })
     .status(200)
-    .json({ message: "authorization successful" });
+    .json({
+      message: "authorization successful",
+      user: {
+        id: existingUser._id,
+        username: existingUser.username,
+        email: existingUser.email,
+      },
+    });
 };
 
 const UpdateProfilePic = async (req, res) => {

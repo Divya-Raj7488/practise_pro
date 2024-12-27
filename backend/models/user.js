@@ -14,15 +14,10 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-    required: false,
+    required: true,
     unique: true,
   },
   profilePic: {
-    type: String,
-    required: false,
-    default: "",
-  },
-  name: {
     type: String,
     required: false,
     default: "",
